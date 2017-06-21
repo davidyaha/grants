@@ -5,7 +5,11 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --coverage",
-    "test:watch": "yarn test -- --watch"
+    "test:watch": "yarn test -- --watch",
+    "lint": "eslint src tests",
+    "prebuild": "rimraf lib",
+    "build": "babel src -d lib",
+    "prepublishOnly": "yarn build"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -21,6 +25,16 @@
     "jest-cli": "^20.0.4"
   },
   "dependencies": {
-    "immutable": "^3.8.1"
+    "immutable": "^3.8.1",
+    "rimraf": "^2.6.1"
+  },
+  "peerDependencies": {
+    "babel-polyfill": "^6.23.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "lib"
+    ],
+    "testEnvironment": "node"
   }
 }

@@ -9,8 +9,10 @@ import type { Grant } from './grant';
 import type { Role } from './role';
 import type { Store } from './store';
 
+export type Members = Set<any> | Array<any> | string;
+
 const expandMembers = (roles: Map<string, Role>) => compose(
-  ([member: any, roles: Map<string, Role>]) => [member, ...(roles.toArray())],
+  ([member, roles]) => [member, ...(roles.toArray())],
   applyAll(
     identity,
     getRolesByMember(roles),

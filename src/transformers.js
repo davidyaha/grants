@@ -3,7 +3,7 @@ import { Set } from 'immutable';
 import { Role } from './role';
 import type { Grant } from './grant';
 
-export type Members = Set<any> | Array<any> | string;
+import type { Members } from './member';
 
 export const membersToSet = (members: Members) =>
   members && (
