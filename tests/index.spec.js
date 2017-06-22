@@ -194,4 +194,20 @@ describe('grants', () => {
     expect(setOfGrants).toHaveLength(2);
     expect(setOfGrants).toEqual(expect.arrayContaining(expected));
   });
+  
+  it('should allow me to define super users', () => {
+    const superUser = {_id: 'clark kent'};
+    const role = grants.role('admin', superUser._id);
+    
+    grants.grant(role, grants.ALL, grants.ALL);
+    
+    grants.grant(machineUser._id, 'posts', ['read', 'create']);
+    grants.grant(privilegedUser._id, ['users', privilegedUser._id], ['read', 'update', 'delete']);
+
+    let permitted = grants.get('posts', 'read');
+    expect(permitted(superUser._id)).toBe(true);
+    
+    permitted = grants.get(['users', privilegedUser._id], 'delete');
+    expect(permitted(superUser._id)).toBe(true);
+  });
 });

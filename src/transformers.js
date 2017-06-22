@@ -1,15 +1,17 @@
 // @flow
 import { Set } from 'immutable';
 import { Role } from './role';
-import type { Grant } from './grant';
 
+import type { Grant } from './grant';
 import type { Members } from './member';
 
 export const membersToSet = (members: Members) =>
   members && (
-    Array.isArray(members) || Set.isSet(members) ?
-      Set(members) :
-      Set.of(members)
+    Set.isSet(members) ? members : (
+      Array.isArray(members) ?
+        Set(members) :
+        Set.of(members)
+    )
   );
 
 const expandWithRole = (set: Set<any>, role: Role) => set.union(role.members || Set());

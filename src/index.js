@@ -7,6 +7,7 @@ import { grant, deny, getPermission } from './grant';
 import { role, setRole } from './role';
 import { resource } from './resource';
 import { member } from './member';
+import { UniversalSet } from './utils';
 
 const grants = {
   _store: new Store(),
@@ -20,6 +21,8 @@ const grants = {
   get setRole() { return setRole(this.setStore.bind(this), this._store) },
   get resource() { return resource(this._store.grants) },
   get member() { return member(this._store) },
+
+  ALL: UniversalSet(),
 }
 
 export default grants;
