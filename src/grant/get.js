@@ -5,7 +5,7 @@ import { grantHaveMembers, grantHaveResources, grantHaveAttributes } from './gra
 import { all } from '../utils';
 
 import type { Grant } from './grant';
-import type { Members } from '../transformers';
+import type { Members } from '../member';
 
 export const getGrantsByMember = (grants: Grant) =>
   (members: Members) => grants.filter(
