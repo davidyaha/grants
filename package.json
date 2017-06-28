@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "main": "index.js",
   "license": "MIT",
+  "author": "David Yahalomi (github.com/davidyaha)",
   "scripts": {
     "test": "jest --coverage",
     "test:watch": "yarn test -- --watch",
