@@ -22,6 +22,6 @@
         "no-unused-vars": "error",
         "constructor-super": "warn",
         "valid-typeof": "warn",
-        "semi": "error"
+        "semi": ["error", "always", { "omitLastInOneLineBlock": true}]
     }
 }
