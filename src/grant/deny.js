@@ -5,14 +5,13 @@ import { grantHaveMembers, grantHaveResources, grantHaveAttributes  } from './gr
 
 import type { Grant } from './grant';
 import type { Store } from '../store';
-import type { Members } from '../transformers';
-
+import type { Members } from '../member';
 
 const shouldBeDenied = (members: Members, resources: Members, attributes: Members) => all(
   grantHaveMembers(members),
   grantHaveResources(resources),
   grantHaveAttributes(attributes),
-)
+);
 
 const denyMemebersOfGrant = (members: Members) =>
   (grant: Grant) => grant.set('members', grant.members.subtract(members));

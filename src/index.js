@@ -24,6 +24,6 @@ const grants = {
   get member() { return member(this._store) },
 
   ALL: UniversalSet(),
-}
+};
 
 export default grants;

@@ -10,7 +10,7 @@ import type { Members } from '../member';
 export const getRolesByMember = (roles: Map<string, Role>) => compose(
   (members: Members) => roles.filter((role: Role) => !role.members.intersect(members).isEmpty()),
   membersToSet,
-)
+);
 
 export const getRoleByName = (roles: Map<string, Role>) =>
   (roleName: string) => roles.get(roleName, Role.lift(roleName));

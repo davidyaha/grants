@@ -11,7 +11,7 @@ export const proxy = (handler: Object) => (target: Object) => {
   }
 
   const trap = wrapMember(handler)(target);
-  const wrapper = {}
+  const wrapper = {};
   for (const property in target) {
     wrapper[property] = trap(property);
   }
