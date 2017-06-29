@@ -20,7 +20,7 @@ export const composeAll = (...funcs: Array<Function>) =>
       ret = [funcs[index].apply(null, ret)];
     }
     return ret[0];
-  }
+  };
 
 export const identity = (value: any) => value;
 

@@ -3,7 +3,7 @@
 import { compose } from './utils';
 import { Store } from './store';
 import { setToPermitted } from './transformers';
-import { grant, deny, getPermission } from './grant';
+import { grant, deny, getPermission, many } from './grant';
 import { role, setRole } from './role';
 import { resource } from './resource';
 import { member } from './member';
@@ -16,6 +16,7 @@ const grants = {
 
   get grant() { return grant(this.setStore.bind(this), this._store) },
   get get() { return compose(setToPermitted, getPermission(this._store.grants)) },
+  get getMany() { return compose(setToPermitted, many(this._store.grants)) },
   get deny() { return deny(this.setStore.bind(this), this._store) },
   get role() { return role(this.setStore.bind(this), this._store) },
   get setRole() { return setRole(this.setStore.bind(this), this._store) },

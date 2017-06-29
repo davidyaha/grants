@@ -2,7 +2,7 @@
 
 import { Set } from 'immutable';
 import { proxy } from './proxy';
-import { compose, echo } from './utils';
+import { compose } from './utils';
 
 const methods = {
   isSubset: () => false,
