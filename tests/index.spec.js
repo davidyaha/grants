@@ -195,6 +195,23 @@ describe('grants', () => {
     expect(setOfGrants).toEqual(expect.arrayContaining(expected));
   });
   
+  it('should allow me to check if a user is within role using the role name', () => {
+    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
+    grants.role('human', humanUsers);
+    
+    const isAHuman = grants.inRole('human');
+    expect(isAHuman).toBeInstanceOf(Function);
+    expect(isAHuman(privilegedUser._id)).toBe(true);
+    expect(isAHuman(machineUser._id)).toBe(false);
+  });
+  
+  it('should allow me to check if a user is within role using the role name even if the role was not defined', () => {
+    const isAHuman = grants.inRole('human');
+    expect(isAHuman).toBeInstanceOf(Function);
+    expect(isAHuman(privilegedUser._id)).toBe(false);
+    expect(isAHuman(machineUser._id)).toBe(false);
+  });
+  
   it('should allow me to define super users', () => {
     const superUser = {_id: 'clark kent'};
     const role = grants.role('admin', superUser._id);
