@@ -16,7 +16,7 @@ export const Role = Record({
 
 Role.lift = (name: string, members: Members) => new Role({
   name,
-  members: membersToSet(members),
+  members: membersToSet(members) || Set(),
 });
 
 Role.isRole = (role: Role) => role && role._name === 'Role';

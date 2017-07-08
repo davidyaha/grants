@@ -147,6 +147,7 @@ describe('grants', () => {
     let permitted = grants.get('posts', 'create');
     expect(permitted).toBeInstanceOf(Function);
     expect(permitted(privilegedUser._id)).toBe(true);
+    expect(permitted(machineUser._id)).toBe(false);
 
     grants.setRole(machineUser._id, role);
     permitted = grants.get('posts', 'create');
@@ -158,6 +159,20 @@ describe('grants', () => {
     grants.role('human', humanUsers);
     
     const role = grants.role('human');
+    expect(role.name).toBe('human');
+    expect(role.members.toJS()).toEqual(humanUsers);
+  });
+  
+  it('should allow me to define a role without members and add to it in later time', () => {
+    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
+    let role = grants.role('human');
+    expect(role.name).toBe('human');
+    expect(role.members).toBe(Set());
+
+    grants.setRole(privilegedUser._id, 'human');
+    grants.setRole(nonPrivilegedUser._id, 'human');
+    
+    role = grants.role('human');
     expect(role.name).toBe('human');
     expect(role.members.toJS()).toEqual(humanUsers);
   });
