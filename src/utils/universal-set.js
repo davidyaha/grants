@@ -11,6 +11,7 @@ const methods = {
   includes: () => true,
   union: function () { return this },
   intersect: (other: Set<any>, ...others) => others.length >= 1 ? other.intersect(...others) : other,
+  toJS: () => ({ universal: true }),
 };
 
 const handler = (methods: Object) => ({
