@@ -1,6 +1,6 @@
 {
   "name": "grants",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "lib/index.js",
   "license": "MIT",
   "author": "David Yahalomi (github.com/davidyaha)",
