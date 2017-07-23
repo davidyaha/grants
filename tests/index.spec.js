@@ -82,11 +82,25 @@ describe('grants', () => {
     permitted = grants.get('posts', 'create');
     expect(permitted(nonPrivilegedUser._id)).toBe(false);
     expect(permitted(privilegedUser._id)).toBe(true);
+  });
+  
+  it('should allow me to remove permissions for roles', () => {
+    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
+    const role = grants.role('human', humanUsers);
+    grants.grant(role, 'posts', ['read', 'create']);
+    
+    let permitted = grants.get('posts', 'create');
+    expect(permitted(nonPrivilegedUser._id)).toBe(true);
+    expect(permitted(privilegedUser._id)).toBe(true);
 
-    // TODO: Fix this test
-    // permitted = grants.get('posts', 'read');
-    // expect(permitted(nonPrivilegedUser._id)).toBe(true);
-    // expect(permitted(privilegedUser._id)).toBe(true);
+    grants.deny(role, 'posts', 'create');
+    permitted = grants.get('posts', 'create');
+    expect(permitted(nonPrivilegedUser._id)).toBe(false);
+    expect(permitted(privilegedUser._id)).toBe(false);
+
+    permitted = grants.get('posts', 'read');
+    expect(permitted(nonPrivilegedUser._id)).toBe(true);
+    expect(permitted(privilegedUser._id)).toBe(true);
   });
 
   it('should allow me to get the all grants for resource', () => {
@@ -197,17 +211,22 @@ describe('grants', () => {
 
   it('should allow me to get all grants for a certain role', () => {
     const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
-    const role = grants.role('human', humanUsers);
-    grants.grant(role, 'posts', ['read', 'create']);
+    const humanRole = grants.role('human', humanUsers);
+    const machineRole = grants.role('machine', machineUser);
+    grants.grant(humanRole, 'posts', ['read', 'create']);
+    grants.grant([humanRole, machineRole], 'posts', ['delete']);
+    grants.grant(humanRole, 'posts', ['update']);
     grants.grant(privilegedUser._id, ['users', privilegedUser._id], ['read', 'update', 'delete']);
     grants.grant(machineUser._id, 'posts', ['read', 'create']);
 
     const expected = [
-      { members: [role.toJS()], resources: ['posts'], attributes: ['read', 'create'] },
+      { members: [humanRole.toJS()], resources: ['posts'], attributes: ['read', 'create'] },
+      { members: [humanRole.toJS()], resources: ['posts'], attributes: ['update'] },
+      { members: [humanRole.toJS(), machineRole.toJS()], resources: ['posts'], attributes: ['delete'] },
     ];
-    const setOfGrants = grants.member(role);
+    const setOfGrants = grants.member(humanRole);
     expect(setOfGrants).toBeInstanceOf(Array);
-    expect(setOfGrants).toHaveLength(1);
+    expect(setOfGrants).toHaveLength(3);
     expect(setOfGrants).toEqual(expect.arrayContaining(expected));
   });
 
