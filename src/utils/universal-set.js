@@ -11,6 +11,7 @@ const methods = {
   includes: () => true,
   union: function () { return this },
   intersect: (other: Set<any>, ...others) => others.length >= 1 ? other.intersect(...others) : other,
+  subtract: () => { throw new Error('Not Implemented')},
   toJS: () => ({ universal: true }),
 };
 

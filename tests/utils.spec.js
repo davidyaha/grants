@@ -62,4 +62,16 @@ describe('UniversalSet', () => {
     expect(universalSet.isSubset(someSet)).toBe(false);
     expect(universalSet.isSubset(emptySet)).toBe(false);
   });
+  
+  it('should return null set if substracted universal set from any set', () => {
+    const someSet = Set(['rock', 'paper', 'scissors']);
+    const emptySet = Set();
+    expect(someSet.subtract(universalSet)).toEqual(emptySet);
+  });
+  
+  // TODO Add complmentary sets
+  it('should throw instead of return complementary set of A , if set A is substracted from universal set', () => {
+    const someSet = Set(['rock', 'paper', 'scissors']);
+    expect(() => universalSet.subtract(someSet)).toThrow('Not Implemented');
+  });
 });
