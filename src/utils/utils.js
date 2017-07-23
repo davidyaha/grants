@@ -24,10 +24,11 @@ export const composeAll = (...funcs: Array<Function>) =>
 
 export const identity = (value: any) => value;
 
-export const applyIf = (func: Function) =>
+export const applyIf = (func: Function, defaultValue: any) =>
   (predicate: Function) =>
     (value: any) =>
-      predicate(value) ? func(value) : value;
+      predicate(value) ? func(value) :
+        (defaultValue !== undefined ? defaultValue : value);
 
 export const selectLast = (arr: Array<any>) => arr[arr.length - 1];
 

@@ -1,31 +1,57 @@
 // @flow
 
-import { composeAll, all, applyIf } from '../utils';
-import { grantHaveMembers, grantHaveResources, grantHaveAttributes  } from './grant';
+import { Set } from 'immutable';
+import { compose, composeAll, all, applyAll, applyIf, selectLast } from '../utils';
+import { Grant, grantHaveMembers, grantHaveResources, grantHaveAttributes } from './grant';
 
-import type { Grant } from './grant';
 import type { Store } from '../store';
-import type { Members } from '../member';
 
-const shouldBeDenied = (members: Members, resources: Members, attributes: Members) => all(
-  grantHaveMembers(members),
-  grantHaveResources(resources),
-  grantHaveAttributes(attributes),
+const shouldBeDenied = (grant: Grant) => all(
+  grantHaveMembers(grant.members),
+  grantHaveResources(grant.resources),
+  grantHaveAttributes(grant.attributes),
 );
 
-const denyMemebersOfGrant = (members: Members) =>
-  (grant: Grant) => grant.set('members', grant.members.subtract(members));
+const splitByFilter = <T>(set: Set<T>) => (filter: Function) => ([
+  set.filter(filter),
+  set.filterNot(filter),
+]);
 
-const denyForStore = (members: Members) => (store: Store) =>
+const createLeftoverGrant = (prop: string) => (denyGrant: Grant) =>
   composeAll(
-    store.set.bind(store, 'grants'),
-    store.grants.map.bind(store.grants),
-    applyIf(denyMemebersOfGrant(members)),
+    applyIf(
+      leftover => Set.of(denyGrant.set(prop, leftover)),
+      Set(),
+    )(leftover => !leftover.isEmpty()),
+    (set: Set<any>) => set.subtract(denyGrant.get(prop)),
+    (grant: Grant) => grant.get(prop),
   );
 
-export const deny = (stateSetter: Function, store: Store) =>
-  (members: Members, resources: Members, attributes: Members) => composeAll(
-    stateSetter,
-    denyForStore(members)(store),
-    shouldBeDenied,
-  )(members, resources, attributes);
+const createDenyReducer = compose(
+  (leftoverCreators: Function[]) =>
+    (grantSet: Set<Grant>, grant: Grant) => grantSet.union(
+      ...leftoverCreators.map(createLeftover => createLeftover(grant)),
+    ),
+  applyAll(
+    createLeftoverGrant('members'),
+    createLeftoverGrant('resources'),
+    createLeftoverGrant('attributes'),
+  ),
+);
+
+const denyAndStore = (store: Store) => (denyGrant: Grant) => composeAll(
+  store.set.bind(store, 'grants'),
+  ([changed, unchanged]) => changed.union(unchanged),
+  applyAll(
+    ([staged]) => staged.reduce(createDenyReducer(denyGrant), Set()),
+    selectLast,
+  ),
+  splitByFilter(store.grants),
+  shouldBeDenied,
+)(denyGrant);
+
+export const deny = (stateSetter: Function, store: Store) => composeAll(
+  stateSetter,
+  denyAndStore(store),
+  Grant.lift,
+);

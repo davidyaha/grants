@@ -17,6 +17,9 @@ Grant.lift = (members: Members, resources: Members, attributes: Members) => new 
   attributes: membersToSet(attributes),
 });
 
+Grant.isEmpty = (grant: Grant) => 
+  grant.members.isEmpty() || grant.resources.isEmpty() || grant.attributes.isEmpty();
+
 export const grantHaveMembers = compose(
   (members: Members) => (grant: Grant) => !grant.members.intersect(members).isEmpty(),
   membersToSet,
