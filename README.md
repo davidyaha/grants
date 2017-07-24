@@ -1,5 +1,7 @@
 # Grants
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/davidyaha/grants.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://circleci.com/gh/davidyaha/grants.svg?style=svg)](https://circleci.com/gh/davidyaha/grants)
 [![codecov](https://codecov.io/gh/davidyaha/grants/branch/master/graph/badge.svg)](https://codecov.io/gh/davidyaha/grants)
 
