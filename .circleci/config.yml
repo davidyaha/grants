@@ -30,9 +30,8 @@ jobs:
         
       # run tests!
       - run: yarn test
-      
-      - store_artifacts:
-          path: ~/repo/coverage
+
+      - run: yarn codecov
 
 
 
