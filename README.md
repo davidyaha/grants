@@ -1,5 +1,7 @@
 # Grants
 
+[![CircleCI](https://circleci.com/gh/davidyaha/grants.svg?style=svg)](https://circleci.com/gh/davidyaha/grants)
+
 Grants is a metadata store for permissions business logic.
 
 It allows you to have the flexibility to grant or deny users of access to any kind of resource.
