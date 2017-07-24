@@ -1,6 +1,7 @@
 # Grants
 
 [![CircleCI](https://circleci.com/gh/davidyaha/grants.svg?style=svg)](https://circleci.com/gh/davidyaha/grants)
+[![codecov](https://codecov.io/gh/davidyaha/grants/branch/master/graph/badge.svg)](https://codecov.io/gh/davidyaha/grants)
 
 Grants is a metadata store for permissions business logic.
 
