@@ -23,25 +23,6 @@ describe('roles', () => {
     grants.clear();
   });
 
-  it('should allow me to remove permissions for roles', () => {
-    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
-    const role = grants.role('human', humanUsers);
-    grants.grant(role, 'posts', ['read', 'create']);
-    
-    let permitted = grants.get('posts', 'create');
-    expect(permitted(nonPrivilegedUser._id)).toBe(true);
-    expect(permitted(privilegedUser._id)).toBe(true);
-
-    grants.deny(role, 'posts', 'create');
-    permitted = grants.get('posts', 'create');
-    expect(permitted(nonPrivilegedUser._id)).toBe(false);
-    expect(permitted(privilegedUser._id)).toBe(false);
-
-    permitted = grants.get('posts', 'read');
-    expect(permitted(nonPrivilegedUser._id)).toBe(true);
-    expect(permitted(privilegedUser._id)).toBe(true);
-  });
-
   it('should allow me to set a name to a Set of users (role)', () => {
     const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
     const role = grants.role('human', humanUsers);
@@ -167,5 +148,40 @@ describe('roles', () => {
 
     permitted = grants.get(['users', privilegedUser._id], 'delete');
     expect(permitted(superUser._id)).toBe(true);
+  });
+
+  it('should allow me to remove permissions for roles', () => {
+    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
+    const role = grants.role('human', humanUsers);
+    grants.grant(role, 'posts', ['read', 'create']);
+    
+    let permitted = grants.get('posts', 'create');
+    expect(permitted(nonPrivilegedUser._id)).toBe(true);
+    expect(permitted(privilegedUser._id)).toBe(true);
+
+    grants.deny(role, 'posts', 'create');
+    permitted = grants.get('posts', 'create');
+    expect(permitted(nonPrivilegedUser._id)).toBe(false);
+    expect(permitted(privilegedUser._id)).toBe(false);
+
+    permitted = grants.get('posts', 'read');
+    expect(permitted(nonPrivilegedUser._id)).toBe(true);
+    expect(permitted(privilegedUser._id)).toBe(true);
+  });
+
+  it('should allow me to unset user in certain role', () => {
+    const humanUsers = [privilegedUser._id, nonPrivilegedUser._id];
+    const role = grants.role('human', humanUsers);
+    grants.grant(role, 'posts', ['read', 'create']);
+
+    let permitted = grants.get('posts', 'create');
+    expect(permitted(privilegedUser._id)).toBe(true);
+    expect(permitted(nonPrivilegedUser._id)).toBe(true);
+    expect(permitted(machineUser._id)).toBe(false);
+
+    grants.unsetRole(nonPrivilegedUser._id, role);
+    permitted = grants.get('posts', 'create');
+    expect(permitted(privilegedUser._id)).toBe(true);
+    expect(permitted(nonPrivilegedUser._id)).toBe(false);
   });
 });
