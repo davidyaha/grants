@@ -21,9 +21,9 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "codecov": "^2.2.0",
-    "eslint": "^3.19.0",
+    "eslint": "^4.3.0",
     "eslint-plugin-flowtype": "^2.34.0",
-    "flow-bin": "^0.47.0",
+    "flow-bin": "^0.51.0",
     "jest": "^20.0.4",
     "jest-cli": "^20.0.4",
     "rimraf": "^2.6.1"
