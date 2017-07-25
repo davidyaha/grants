@@ -18,14 +18,14 @@ const splitByFilter = <T>(set: Set<T>) => (filter: Function) => ([
 ]);
 
 const createLeftoverGrant = (prop: string) => (denyGrant: Grant) =>
-  composeAll(
+  (grant: Grant) => composeAll(
     applyIf(
-      leftover => Set.of(denyGrant.set(prop, leftover)),
+      leftover => Set.of(grant.set(prop, leftover)),
       Set(),
     )(leftover => !leftover.isEmpty()),
     (set: Set<any>) => set.subtract(denyGrant.get(prop)),
     (grant: Grant) => grant.get(prop),
-  );
+  )(grant);
 
 const createDenyReducer = compose(
   (leftoverCreators: Function[]) =>
