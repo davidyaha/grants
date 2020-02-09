@@ -27,7 +27,7 @@
     "greenkeeper-lockfile": "1",
     "jest": "^22.0.0",
     "jest-cli": "^22.0.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
     "immutable": "^3.8.1"
